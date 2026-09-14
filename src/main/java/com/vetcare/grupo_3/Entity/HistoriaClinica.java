@@ -2,6 +2,7 @@ package com.vetcare.grupo_3.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Entity
@@ -13,9 +14,15 @@ public class HistoriaClinica {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String fechaApertura;
-    private String antecedentes;
-    private String observaciones;
+    @NotBlank(message = "el motivo es obligatorio")
+    private String motivo;
+
+    @NotBlank(message = "el diagnostico es obligatorio")
+    private String diagnostico;
+
+    @NotBlank(message = "el tratamiento es obligatorio")
+    private String tratamiento;
+
 
     // AHORA SÍ: HistoriaClinica es la dueña de la relación en la base de datos
     @OneToOne

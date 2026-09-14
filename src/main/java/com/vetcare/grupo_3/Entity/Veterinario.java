@@ -2,6 +2,7 @@ package com.vetcare.grupo_3.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import java.util.List;
 
@@ -13,11 +14,14 @@ public class Veterinario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "el registro es obligatorio")
+    private String registro;
 
-    private String nombre;
-    private String tarjetaProfesional;
+    @NotBlank(message = "la especialidad es obligatoria")
     private String especialidad;
-    private String correo;
+
+    @NotBlank(message = "el estado es obligatorio")
+    private String estado;
 
     // Ignoramos la lista de mascotas para evitar el bucle N:M
     @ManyToMany(mappedBy = "veterinarios")

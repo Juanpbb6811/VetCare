@@ -2,7 +2,11 @@ package com.vetcare.grupo_3.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -14,26 +18,15 @@ public class Mascota {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "el nombre es obligatorio")
     private String nombre;
+
+    @NotBlank(message = "la especie es obligatoria")
     private String especie;
+
+    @NotBlank(message = "la raza es obligatoria")
     private String raza;
-    private Integer edad;
-    private Double peso;
 
-    @ManyToOne
-    @JoinColumn(name = "propietario_id")
-    private Propietario propietario;
-
-    // AHORA SÍ: Delegamos la responsabilidad a HistoriaClinica con el mappedBy
-    @OneToOne(mappedBy = "mascota", cascade = CascadeType.ALL)
-    private HistoriaClinica historiaClinica;
-
-    @ManyToMany
-    @JoinTable(
-            name = "mascota_veterinario",
-            joinColumns = @JoinColumn(name = "mascota_id"),
-            inverseJoinColumns = @JoinColumn(name = "veterinario_id")
-    )
-    @JsonIgnore
-    private List<Veterinario> veterinarios;
+    @NotNull(message = "la fecha de nacimiento es obligatoria")
+    private LocalDate fechaDeNacimiento;
 }
