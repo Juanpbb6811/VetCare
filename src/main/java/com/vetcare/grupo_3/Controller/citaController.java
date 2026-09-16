@@ -1,4 +1,5 @@
-package com.vetcare.grupo_3.Controller;
+package com.vetcare.grupo_3.controller;
 
 public class citaController {
+
 }
