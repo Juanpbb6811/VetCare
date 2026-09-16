@@ -1,4 +1,4 @@
-package com.vetcare.grupo_3.Controller;
+package com.vetcare.grupo_3.controller;
 
 import com.vetcare.grupo_3.Entity.HistoriaClinica;
 import com.vetcare.grupo_3.Service.historiaClinicaService;
