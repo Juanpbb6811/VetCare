@@ -18,6 +18,7 @@ public class Vacuna {
     private String nombre;
     private LocalDate fecha;
     private LocalDate proximaFecha;
+
     private String observacion;
 
     //RELACIONES

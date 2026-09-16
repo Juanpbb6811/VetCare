@@ -14,8 +14,8 @@ public class Veterinario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String registro;}
-    private String especialidad;}
+    private String registro;
+    private String especialidad;
     private String estado;
 
     // RELACIONES
@@ -32,4 +32,8 @@ public class Veterinario {
     // Relacion Uno a muchos con Vacuna
     @OneToMany(mappedBy = "veterinario")
     private List<Vacuna> vacunas;
+
+    // relacion cita
+    @OneToMany(mappedBy = "veterinario")
+    private List<Cita> citas;
 }
