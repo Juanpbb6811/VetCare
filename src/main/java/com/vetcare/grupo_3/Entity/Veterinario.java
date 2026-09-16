@@ -23,8 +23,18 @@ public class Veterinario {
     @NotBlank(message = "el estado es obligatorio")
     private String estado;
 
-    // Ignoramos la lista de mascotas para evitar el bucle N:M
+    // RELACIONES
+
+    //Relacion muchos a muchos
     @ManyToMany(mappedBy = "veterinarios")
     @JsonIgnore
     private List<Mascota> mascotas;
+
+    //Relacion un a muchos
+    @OneToMany(mappedBy = "veterinario")
+    private List<Horario> horarios;
+
+    // Relacion Uno a muchos con Vacuna
+    @OneToMany(mappedBy = "veterinario")
+    private List<Vacuna> vacunas;
 }

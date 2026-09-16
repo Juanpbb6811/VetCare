@@ -23,8 +23,9 @@ public class HistoriaClinica {
     @NotBlank(message = "el tratamiento es obligatorio")
     private String tratamiento;
 
+    // RELACIONES
 
-    // AHORA SÍ: HistoriaClinica es la dueña de la relación en la base de datos
+    // Relacion uno a uno(mascota)
     @OneToOne
     @JoinColumn(name = "mascota_id")
     @JsonIgnore

@@ -25,5 +25,13 @@ public class Pago {
     @NotBlank(message = "el estado es obligatorio")
     private String estado;
 
+    // RELACIONES
+
+    // Relacion uno a muchos (servicios)
+    @ManyToOne
+    @JoinColumn(name = "servicio_id")
+    private Servicio servicio;
+
+
 }
 

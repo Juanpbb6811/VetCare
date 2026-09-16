@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Table(name = "Usuarios")
 @Data
@@ -18,9 +20,22 @@ public class Usuario {
 
 
     @NotBlank(message = "el correo es obligatorio")
-    @Email
+    @Email(message = "email no valido")
     private String correo;
 
     @NotBlank(message = "el telefono es obligatorio")
     private String telefono;
+
+    // RELACIONES
+
+    // Relacion uno a muchos(roles)
+    @ManyToOne
+    @JoinColumn(name = "rol_id")
+    private Rol rol;
+
+    // Relacion uno a muchos(citas)
+    @OneToMany(mappedBy = "Usuario")
+    private List<Cita> citas;
+
+
 }

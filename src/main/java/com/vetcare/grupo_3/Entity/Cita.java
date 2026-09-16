@@ -20,4 +20,11 @@ public class Cita {
 
     @NotBlank(message = "el estado de la cita es obligatorio")
     private String estado;
+
+    // RELACIONES
+
+    // Relacion uno a muchos (citas)
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 }
