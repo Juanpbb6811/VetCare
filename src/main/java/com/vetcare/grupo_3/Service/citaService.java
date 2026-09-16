@@ -12,4 +12,5 @@ public interface citaService {
                    Long usuarioId, Long mascotaId, Long veterinarioId, Long servicioId);
     Cita cancelar(Long id);
     Cita pagar(Long id);
-}
+
+  }

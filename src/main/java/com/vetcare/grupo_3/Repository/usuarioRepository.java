@@ -1,7 +1,6 @@
 package com.vetcare.grupo_3.Repository;
 
 import com.vetcare.grupo_3.Entity.Usuario;
-import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

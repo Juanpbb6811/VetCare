@@ -1,9 +1,7 @@
 package com.vetcare.grupo_3.ServiceIMP;
 
-import com.vetcare.grupo_3.Entity.Mascota;
 import com.vetcare.grupo_3.Entity.Vacuna;
 import com.vetcare.grupo_3.Entity.Veterinario;
-import com.vetcare.grupo_3.Repository.mascotaRepository;
 import com.vetcare.grupo_3.Repository.vacunaRepository;
 import com.vetcare.grupo_3.Repository.veterinarioRepository;
 import com.vetcare.grupo_3.Service.vacunaService;

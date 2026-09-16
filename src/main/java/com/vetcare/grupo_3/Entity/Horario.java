@@ -1,6 +1,5 @@
 package com.vetcare.grupo_3.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -23,5 +22,5 @@ public class Horario {
     // Relacion uno a muchos(veterinarios)
     @ManyToOne
     @JoinColumn(name = "veterinario_id")
-    private Veterinario veterinario;
+    private com.vetcare.grupo_3.Entity.Veterinario veterinario;
 }
