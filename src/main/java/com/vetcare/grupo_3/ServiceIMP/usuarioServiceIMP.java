@@ -15,7 +15,6 @@ public class usuarioServiceIMP implements usuarioService {
 
     private final usuarioRepository repository;
 
-
     @Override
     @Transactional(readOnly = true)
     public List<Usuario> ListarUsuarios() {
@@ -26,8 +25,7 @@ public class usuarioServiceIMP implements usuarioService {
     @Transactional(readOnly = true)
     public Usuario BuscarUsuarioId(Long id) {
         return repository.findById(id)
-                .orElseThrow(()
-                        -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
 
     @Override
@@ -40,14 +38,15 @@ public class usuarioServiceIMP implements usuarioService {
     @Transactional
     public Usuario actualizarUsuario(Usuario usuario, Long id) {
         Usuario existente = BuscarUsuarioId(id);
+        usuario.setId(existente.getId()); // ¡Corrección aplicada aquí!
         return repository.save(usuario);
     }
 
     @Override
     @Transactional
     public void eliminarUsuario(Long id) {
-       Usuario usuario = BuscarUsuarioId(id);
-       repository.delete(usuario);
+        Usuario usuario = BuscarUsuarioId(id);
+        repository.delete(usuario);
     }
 
     @Override
@@ -58,9 +57,13 @@ public class usuarioServiceIMP implements usuarioService {
     @Override
     @Transactional(readOnly = true)
     public Usuario autenticar(String correo, String password) {
-       Usuario usuario = repository.findBycorreo(correo)
-               .orElseThrow(()
-                       -> new RuntimeException("Usuario no encontrado"));
-       return usuario;
+        Usuario usuario = repository.findBycorreo(correo)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // Validación de contraseña básica
+        if (!usuario.getPassword().equals(password)) {
+            throw new RuntimeException("Credenciales inválidas");
+        }
+        return usuario;
     }
 }
