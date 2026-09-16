@@ -1,4 +1,4 @@
-package com.vetcare.grupo_3.controller;
+package com.vetcare.grupo_3.Controller;
 
 import com.vetcare.grupo_3.Entity.Veterinario;
 import com.vetcare.grupo_3.Service.veterinarioService;
@@ -11,31 +11,32 @@ import java.util.List;
 @RequestMapping("/api/veterinarios")
 @RequiredArgsConstructor
 public class veterinarioController {
-    private final veterinarioService veterinarioService;
 
-        @GetMapping
-        public ResponseEntity<List<Veterinario>> listarTodos() {
-            return ResponseEntity.ok(
-                    veterinarioService.listarVeterinario()
-            );
-        }
+private final veterinarioService veterinarioService;
 
-        @GetMapping("/{id}")
-        public ResponseEntity<Veterinario> buscarPorId(
-                @PathVariable Long id) {
+@GetMapping
+public ResponseEntity<List<Veterinario>> listarTodos() {
+    return ResponseEntity.ok(
+            veterinarioService.listarVeterinario()
+    );
+}
 
-            return ResponseEntity.ok(
-                    veterinarioService.buscarVeterinarioId(id)
-            );
-        }
+@GetMapping("/{id}")
+public ResponseEntity<Veterinario> buscarPorId(
+        @PathVariable Long id) {
 
-        @PostMapping
-        public ResponseEntity<Veterinario> guardar(
-                @RequestBody Veterinario veterinario) {
+    return ResponseEntity.ok(
+            veterinarioService.buscarVeterinarioId(id)
+    );
+}
 
-            return ResponseEntity.ok(
-                    veterinarioService.guardarVeterinario(veterinario)
-            );
-        }
+@PostMapping
+public ResponseEntity<Veterinario> guardar(
+        @RequestBody Veterinario veterinario) {
+
+    return ResponseEntity.ok(
+            veterinarioService.guardarVeterinario(veterinario)
+    );
+}
 
     }
