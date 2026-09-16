@@ -1,8 +1,6 @@
 package com.vetcare.grupo_3.Entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Entity
