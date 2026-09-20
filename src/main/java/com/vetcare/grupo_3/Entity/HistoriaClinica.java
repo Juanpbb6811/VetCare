@@ -9,18 +9,11 @@ import lombok.Data;
 @Table(name = "historias_clinicas")
 @Data
 public class HistoriaClinica {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank(message = "el motivo es obligatorio")
     private String motivo;
-
-    @NotBlank(message = "el diagnostico es obligatorio")
     private String diagnostico;
-
-    @NotBlank(message = "el tratamiento es obligatorio")
     private String tratamiento;
 
     // RELACIONES

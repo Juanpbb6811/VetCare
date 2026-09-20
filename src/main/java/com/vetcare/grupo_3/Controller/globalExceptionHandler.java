@@ -1,4 +1,4 @@
-package com.vetcare.grupo_3.Controller;
+package com.vetcare.grupo_3.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,5 @@
 package com.vetcare.grupo_3.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 

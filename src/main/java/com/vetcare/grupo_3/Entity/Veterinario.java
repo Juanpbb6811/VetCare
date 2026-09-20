@@ -37,4 +37,8 @@ public class Veterinario {
     // Relacion Uno a muchos con Vacuna
     @OneToMany(mappedBy = "veterinario")
     private List<Vacuna> vacunas;
+
+    // relacion cita
+    @OneToMany(mappedBy = "veterinario")
+    private List<Cita> citas;
 }
