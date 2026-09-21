@@ -13,14 +13,14 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "el nombre es obligatorio")
+
     private String nombre;
 
-    @NotBlank(message = "el correo es obligatorio")
-    @Email
+
+
     private String correo;
 
-    @NotBlank(message = "el telefono es obligatorio")
+
     private String telefono;
 
     @NotBlank(message = "la contraseña es obligatoria")

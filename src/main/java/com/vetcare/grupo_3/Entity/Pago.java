@@ -14,14 +14,8 @@ public class Pago {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotNull(message = "el monto es obligatorio")
     private double precio;
-
-
     private LocalDate metodo;
-
-    @NotBlank(message = "el estado es obligatorio")
     private String estado;
 
     // RELACIONES

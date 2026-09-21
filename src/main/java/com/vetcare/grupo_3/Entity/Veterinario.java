@@ -14,13 +14,8 @@ public class Veterinario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank(message = "el registro es obligatorio")
     private String registro;
-
-    @NotBlank(message = "la especialidad es obligatoria")
     private String especialidad;
-
-    @NotBlank(message = "el estado es obligatorio")
     private String estado;
 
     // RELACIONES

@@ -15,16 +15,9 @@ public class Servicio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank(message = " el nombre es obligatorio")
     private String nombre;
-
     private LocalDateTime duracion;
-
-    @NotNull(message = "el precio del servicio es obligatorio")
     private double precio;
-
-    @NotBlank(message = "los requisitos son obligatorios")
     private String requisitos;
 
     // RELACIONES

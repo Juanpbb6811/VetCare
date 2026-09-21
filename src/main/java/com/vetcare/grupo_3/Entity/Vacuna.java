@@ -15,16 +15,9 @@ public class Vacuna {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank(message = "el nombre de la vacuna es obligatorio")
     private String nombre;
-
-    @NotNull(message = "la fecha es obligatoria")
     private LocalDate fecha;
-
-    @NotNull(message = "la proxima fecha de vacunacion es obligatoria")
     private LocalDate proximaFecha;
-
     private String observacion;
 
     //RELACIONES

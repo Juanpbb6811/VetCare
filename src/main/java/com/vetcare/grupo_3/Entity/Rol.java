@@ -13,8 +13,6 @@ public class Rol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @NotBlank(message = "el rol es obligatorio")
     private String nombre;
 
     // RELACIONES

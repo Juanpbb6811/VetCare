@@ -17,16 +17,16 @@ public class Mascota {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "el nombre es obligatorio")
+
     private String nombre;
 
-    @NotBlank(message = "la especie es obligatoria")
+
     private String especie;
 
-    @NotBlank(message = "la raza es obligatoria")
+
     private String raza;
 
-    @NotNull(message = "la fecha de nacimiento es obligatoria")
+
     private LocalDate fechaDeNacimiento;
 
 
