@@ -1,11 +1,11 @@
 package com.vetcare.grupo_3.ServiceIMP;
 
 import com.vetcare.grupo_3.Entity.*;
+import com.vetcare.grupo_3.Exception.ResourceNotFoundException;
 import com.vetcare.grupo_3.Repository.*;
 import com.vetcare.grupo_3.Service.citaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 @Service
@@ -17,71 +17,59 @@ public class citaServiceIMP implements citaService {
     private final veterinarioRepository veterinarioRepository;
     private final servicioRepository servicioRepository;
     @Override
-    @Transactional(readOnly = true)
     public List<Cita> listarCitas() {
         return citaRepository.findAll();
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Cita BuscarPorId(Long id) {
         return citaRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Cita no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cita no encontrada con ID: " + id));
     }
 
-
     @Override
-    @Transactional
     public Cita actualizar(Cita cita, Long id) {
-        return null;
+        Cita citaExistente = BuscarPorId(id);
+        citaExistente.setFecha(cita.getFecha());
+        citaExistente.setEstado(cita.getEstado());
+        return citaRepository.save(citaExistente);
     }
 
-
-
     @Override
-    @Transactional
     public Cita registrar(Cita cita, Long usuarioId, Long mascotaId, Long veterinarioId, Long servicioId) {
-
-        Usuario usuario = usuarioRepository
-                    .findById(usuarioId)
-                    .orElseThrow(() ->
-                            new RuntimeException(
-                                    "Usuario no encontrado"));
-
-            Mascota mascota = mascotaRepository
-                    .findById(mascotaId)
-                    .orElseThrow(() ->
-                            new RuntimeException(
-                                    "Mascota no encontrada"));
-
-            Veterinario veterinario = veterinarioRepository
-                    .findById(veterinarioId)
-                    .orElseThrow(() ->
-                            new RuntimeException(
-                                    "Veterinario no encontrado"));
-
-            Servicio servicio = servicioRepository
-                    .findById(servicioId)
-                    .orElseThrow(() ->
-                            new RuntimeException(
-                                    "Servicio no encontrado"));
-
-            return citaRepository.save(cita);
-    }
-
-    @Override
-    @Transactional
-    public Cita cancelar(Long id) {
-
-        Cita cita = BuscarPorId(id);
+        if (usuarioId != null) {
+            Usuario usuario = usuarioRepository.findById(usuarioId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + usuarioId));
+            cita.setUsuario(usuario);
+        }
+        if (mascotaId != null) {
+            Mascota mascota = mascotaRepository.findById(mascotaId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada con ID: " + mascotaId));
+            cita.setMascota(mascota);
+        }
+        if (veterinarioId != null) {
+            Veterinario veterinario = veterinarioRepository.findById(veterinarioId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Veterinario no encontrado con ID: " + veterinarioId));
+            cita.setVeterinario(veterinario);
+        }
+        if (servicioId != null) {
+            Servicio servicio = servicioRepository.findById(servicioId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Servicio no encontrado con ID: " + servicioId));
+        }
         return citaRepository.save(cita);
     }
 
     @Override
-    @Transactional
+    public Cita cancelar(Long id) {
+        Cita cita = BuscarPorId(id);
+        cita.setEstado("CANCELADA");
+        return citaRepository.save(cita);
+    }
+
+    @Override
     public Cita pagar(Long id) {
         Cita cita = BuscarPorId(id);
+        cita.setEstado("PAGADA");
         return citaRepository.save(cita);
     }
-  }
+}

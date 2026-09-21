@@ -1,8 +1,7 @@
 package com.vetcare.grupo_3.Entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -20,5 +19,18 @@ public class Cita {
     // Relacion uno a muchos (citas)
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    private com.vetcare.grupo_3.Entity.Usuario usuario;
+    private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "mascota_id")
+    private Mascota mascota;
+
+    @ManyToOne
+    @JoinColumn(name = "veterinario_id")
+    private Veterinario veterinario;
+
+    @ManyToOne
+    @JoinColumn(name = "servicio_id")
+    private Servicio servicio;
+
 }

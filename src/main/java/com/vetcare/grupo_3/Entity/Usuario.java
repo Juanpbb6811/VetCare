@@ -12,17 +12,12 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
     private String nombre;
-
-
-
     private String correo;
-
-
     private String telefono;
-
-    @NotBlank(message = "la contraseña es obligatoria")
     private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "rol_id")
+    private Rol rol;
 }

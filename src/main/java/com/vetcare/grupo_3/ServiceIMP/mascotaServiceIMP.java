@@ -1,6 +1,7 @@
 package com.vetcare.grupo_3.ServiceIMP;
 
 import com.vetcare.grupo_3.Entity.Mascota;
+import com.vetcare.grupo_3.Exception.ResourceNotFoundException;
 import com.vetcare.grupo_3.Repository.mascotaRepository;
 import com.vetcare.grupo_3.Repository.usuarioRepository;
 import com.vetcare.grupo_3.Service.mascotaService;
@@ -19,7 +20,8 @@ public class mascotaServiceIMP implements mascotaService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Mascota> ListarMascotas() {
+    public List<Mascota> ListarMascotas()
+    {
         return mascotaRepository.findAll();
     }
 
@@ -28,7 +30,7 @@ public class mascotaServiceIMP implements mascotaService {
     public Mascota BuscarporId(Long id) {
         return mascotaRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Mascota no encontrada"));
+                        new ResourceNotFoundException("Mascota no encontrada con el id " + id));
     }
 
     @Override
@@ -37,7 +39,7 @@ public class mascotaServiceIMP implements mascotaService {
 
         usuarioRepository.findById(usuarioId)
                 .orElseThrow(() ->
-                        new RuntimeException("Usuario no encontrado"));
+                        new ResourceNotFoundException("Usuario no encontrado"));
 
         return mascotaRepository.save(mascota);
     }
@@ -45,10 +47,7 @@ public class mascotaServiceIMP implements mascotaService {
     @Override
     @Transactional
     public Mascota actualizar(Long id, Mascota mascota) {
-
-        BuscarporId(id);
-        mascota.setId(id);
-
+        Mascota exist = BuscarporId(id);
         return mascotaRepository.save(mascota);
     }
 

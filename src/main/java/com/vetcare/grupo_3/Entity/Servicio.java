@@ -21,7 +21,6 @@ public class Servicio {
     private String requisitos;
 
     // RELACIONES
-
     // Relacion uno a muchos(pagos)
     @OneToMany(mappedBy = "Pago")
     private List<Pago> pagos;
@@ -29,5 +28,7 @@ public class Servicio {
     // Relacion muchos a muchos(mascota)
     @ManyToMany(mappedBy = "servicios")
     private List<Mascota> mascotas;
+
+
 
 }
