@@ -1,8 +1,11 @@
 package com.vetcare.grupo_3.controller;
 
-import com.vetcare.grupo_3.Entity.Cita;
+import com.vetcare.grupo_3.DTO.citaDTO;
+import com.vetcare.grupo_3.DTO.responseDTO.citaResponseDTO;
 import com.vetcare.grupo_3.Service.citaService;
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,55 +13,38 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/citas")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class citaController {
 
-    private final citaService citaService;
+    private final citaService service;
 
-    // LISTAR CITAS
     @GetMapping
-    public ResponseEntity<List<Cita>> listarTodas() {
-        return ResponseEntity.ok(citaService.listarCitas());
+    public ResponseEntity<List<citaResponseDTO>> listarCitas() {
+        return ResponseEntity.ok(service.listarCitas());
     }
 
-    // BUSCAR POR ID
     @GetMapping("/{id}")
-    public ResponseEntity<Cita> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(citaService.BuscarPorId(id));
+    public ResponseEntity<citaResponseDTO> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.BuscarPorId(id));
     }
 
-    // REGISTRAR CITA (necesita los 4 ids de las relaciones)
     @PostMapping
-    public ResponseEntity<Cita> registrar(
-            @RequestBody Cita cita,
-            @RequestParam Long usuarioId,
-            @RequestParam Long mascotaId,
-            @RequestParam Long veterinarioId,
-            @RequestParam Long servicioId) {
-
-        return ResponseEntity.ok(
-                citaService.registrar(cita, usuarioId, mascotaId, veterinarioId, servicioId)
-        );
+    public ResponseEntity<citaResponseDTO> registrar(@Valid @RequestBody citaDTO dto) {
+        return new ResponseEntity<>(service.registrar(dto), HttpStatus.CREATED);
     }
 
-    // ACTUALIZAR CITA
     @PutMapping("/{id}")
-    public ResponseEntity<Cita> actualizar(
-            @PathVariable Long id,
-            @RequestBody Cita cita) {
-
-        return ResponseEntity.ok(citaService.actualizar(cita, id));
+    public ResponseEntity<citaResponseDTO> actualizar(@PathVariable Long id, @Valid @RequestBody citaDTO dto) {
+        return ResponseEntity.ok(service.actualizar(dto, id));
     }
 
-    // CANCELAR CITA
     @PutMapping("/{id}/cancelar")
-    public ResponseEntity<Cita> cancelar(@PathVariable Long id) {
-        return ResponseEntity.ok(citaService.cancelar(id));
+    public ResponseEntity<citaResponseDTO> cancelar(@PathVariable Long id) {
+        return ResponseEntity.ok(service.cancelar(id));
     }
 
-    // PAGAR CITA
     @PutMapping("/{id}/pagar")
-    public ResponseEntity<Cita> pagar(@PathVariable Long id) {
-        return ResponseEntity.ok(citaService.pagar(id));
+    public ResponseEntity<citaResponseDTO> pagar(@PathVariable Long id) {
+        return ResponseEntity.ok(service.pagar(id));
     }
 }

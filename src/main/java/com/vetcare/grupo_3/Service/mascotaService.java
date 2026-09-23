@@ -1,17 +1,18 @@
 package com.vetcare.grupo_3.Service;
 
-import com.vetcare.grupo_3.Entity.Mascota;
+import com.vetcare.grupo_3.DTO.mascotaDTO;
+import com.vetcare.grupo_3.DTO.responseDTO.mascotaResponseDTO;
 
 import java.util.List;
 
 public interface mascotaService {
-    List<Mascota> ListarMascotas();
+    List<mascotaResponseDTO> ListarMascotas();
 
-    Mascota BuscarporId(Long id);
+    mascotaResponseDTO BuscarporId(Long id);
 
-    Mascota crear(Mascota mascota, Long usuarioId);
+    mascotaResponseDTO crear(mascotaDTO dto, Long usuarioId);
 
-    Mascota actualizar(Long id, Mascota mascota);
+    mascotaResponseDTO actualizar(Long id, mascotaDTO dto);
 
     void eliminar(Long id);
 }

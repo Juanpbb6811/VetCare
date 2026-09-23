@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public record pagoDTO(
         @NotNull(message = "El precio es obligatorio") Double precio,
-        LocalDate metodo,
+        String metodo,
         @NotBlank(message = "El estado es obligatorio") String estado,
         @NotNull(message = "El ID del servicio es obligatorio") Long servicioId
 ) {}

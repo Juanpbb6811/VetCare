@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public record pagoResponseDTO(
         Long id,
         Double precio,
-        LocalDate metodo,
+        String metodo,
         String estado,
         Long servicioId
 ) {}

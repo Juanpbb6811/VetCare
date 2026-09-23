@@ -6,4 +6,5 @@ public record veterinarioResponseDTO(
             String registro,
             String especialidad,
             String estado
+
     ) {}

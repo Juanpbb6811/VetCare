@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Entity
-@Table(name = "historias_clinicas")
+@Table(name = "historias clinicas")
 @Data
 public class HistoriaClinica {
     @Id

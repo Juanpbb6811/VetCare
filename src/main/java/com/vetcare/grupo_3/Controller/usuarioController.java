@@ -1,64 +1,58 @@
 package com.vetcare.grupo_3.controller;
 
-import com.vetcare.grupo_3.Entity.Usuario;
+import com.vetcare.grupo_3.DTO.responseDTO.usuarioResponseDTO;
+import com.vetcare.grupo_3.DTO.usuarioDTO;
 import com.vetcare.grupo_3.Service.usuarioService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@RequiredArgsConstructor
-@Tag(name = "Usuarios", description = "API para la gestión y autenticación de usuarios (RF01)")
+@AllArgsConstructor
 public class usuarioController {
 
     private final usuarioService service;
 
+
+
     @GetMapping
-    @Operation(summary = "Listar todos los usuarios")
-    public ResponseEntity<List<Usuario>> listarUsuarios() {
+    public ResponseEntity<List<usuarioResponseDTO>> listar() {
         return ResponseEntity.ok(service.ListarUsuarios());
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Buscar un usuario por su ID")
-    public ResponseEntity<Usuario> buscarUsuarioId(@PathVariable Long id) {
+    public ResponseEntity<usuarioResponseDTO> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.BuscarUsuarioId(id));
     }
 
-    @PostMapping("/registro")
-    @Operation(summary = "Registrar un nuevo usuario")
-    public ResponseEntity<Usuario> guardarUsuario(@Valid @RequestBody Usuario usuario) {
-        // El @Valid asegura que se cumplan el @NotBlank y @Email de tu entidad
-        return new ResponseEntity<>(service.guardarUsuario(usuario), HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<usuarioResponseDTO> guardar(@Valid @RequestBody usuarioDTO dto) {
+        return new ResponseEntity<>(service.guardarUsuario(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Actualizar un usuario existente")
-    public ResponseEntity<Usuario> actualizarUsuario(@Valid @RequestBody Usuario usuario, @PathVariable Long id) {
-        return ResponseEntity.ok(service.actualizarUsuario(usuario, id));
+    public ResponseEntity<usuarioResponseDTO> actualizar(@PathVariable Long id, @Valid @RequestBody usuarioDTO dto) {
+        return ResponseEntity.ok(service.actualizarUsuario(dto, id));
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Eliminar un usuario")
-    public ResponseEntity<Void> eliminarUsuario(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         service.eliminarUsuario(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/{id_usuario}/rol/{rol_id}")
+    public ResponseEntity<usuarioResponseDTO> asignarRol(@PathVariable Long id_usuario, @PathVariable Long rol_id) {
+        return ResponseEntity.ok(service.asignarRol(id_usuario, rol_id));
+    }
+
     @PostMapping("/login")
-    @Operation(summary = "Autenticar un usuario (Inicio de sesión)")
-    public ResponseEntity<Usuario> login(@RequestBody Map<String, String> credenciales) {
-        String correo = credenciales.get("correo");
-        String password = credenciales.get("password");
-        // Nota: Por ahora tu entidad no tiene campo 'password', pero el servicio recibe el parámetro.
+    public ResponseEntity<usuarioResponseDTO> autenticar(@RequestParam String correo, @RequestParam String password) {
         return ResponseEntity.ok(service.autenticar(correo, password));
     }
 }

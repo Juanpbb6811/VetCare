@@ -1,10 +1,14 @@
 package com.vetcare.grupo_3.ServiceIMP;
 
+import com.vetcare.grupo_3.DTO.mascotaDTO;
+import com.vetcare.grupo_3.DTO.responseDTO.mascotaResponseDTO;
 import com.vetcare.grupo_3.Entity.Mascota;
+import com.vetcare.grupo_3.Entity.Usuario;
 import com.vetcare.grupo_3.Exception.ResourceNotFoundException;
 import com.vetcare.grupo_3.Repository.mascotaRepository;
 import com.vetcare.grupo_3.Repository.usuarioRepository;
 import com.vetcare.grupo_3.Service.mascotaService;
+import com.vetcare.grupo_3.mapper.MascotaMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,44 +21,50 @@ public class mascotaServiceIMP implements mascotaService {
 
     private final mascotaRepository mascotaRepository;
     private final usuarioRepository usuarioRepository;
+    private final MascotaMapper mascotaMapper;
+
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Mascota> ListarMascotas()
-    {
-        return mascotaRepository.findAll();
+    public List<mascotaResponseDTO> ListarMascotas() {
+        return mascotaMapper.aResponseList(mascotaRepository.findAll());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Mascota BuscarporId(Long id) {
-        return mascotaRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Mascota no encontrada con el id " + id));
+    public mascotaResponseDTO BuscarporId(Long id) {
+        Mascota mascota = mascotaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada con ID: " + id));
+        return mascotaMapper.Response(mascota);
     }
 
     @Override
     @Transactional
-    public Mascota crear(Mascota mascota, Long usuarioId) {
-
-        usuarioRepository.findById(usuarioId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Usuario no encontrado"));
-
-        return mascotaRepository.save(mascota);
+    public mascotaResponseDTO crear(mascotaDTO dto, Long usuarioId) {
+        Usuario usuario = usuarioRepository.findById(dto.usuarioId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + dto.usuarioId()));
+        Mascota mascota = mascotaMapper.Entidad(dto);
+        mascota.setUsuario(usuario);
+        return mascotaMapper.Response(mascotaRepository.save(mascota));
     }
 
     @Override
     @Transactional
-    public Mascota actualizar(Long id, Mascota mascota) {
-        Mascota exist = BuscarporId(id);
-        return mascotaRepository.save(mascota);
+    public mascotaResponseDTO actualizar(Long id, mascotaDTO dto) {
+        Mascota existente = mascotaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada con ID: " + id));
+        existente.setNombre(dto.nombre());
+        existente.setEspecie(dto.especie());
+        existente.setRaza(dto.raza());
+        existente.setFechaDeNacimiento(dto.fechaDeNacimiento());
+        return mascotaMapper.Response(mascotaRepository.save(existente));
     }
 
     @Override
     @Transactional
     public void eliminar(Long id) {
-        BuscarporId(id);
+        if (!mascotaRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Mascota no encontrada con ID: " + id);
+        }
         mascotaRepository.deleteById(id);
     }
 }

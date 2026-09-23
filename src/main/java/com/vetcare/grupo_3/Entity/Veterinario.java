@@ -18,6 +18,7 @@ public class Veterinario {
     private String especialidad;
     private String estado;
 
+
     // RELACIONES
 
     //Relacion muchos a muchos

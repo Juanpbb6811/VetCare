@@ -24,6 +24,7 @@ public class VeterinarioMapper {
                 veterinario.getRegistro(),
                 veterinario.getEspecialidad(),
                 veterinario.getEstado()
+
         );
     }
 

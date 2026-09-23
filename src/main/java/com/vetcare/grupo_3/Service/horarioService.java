@@ -1,15 +1,16 @@
 package com.vetcare.grupo_3.Service;
 
-import com.vetcare.grupo_3.Entity.Horario;
+import com.vetcare.grupo_3.DTO.horarioDTO;
+import com.vetcare.grupo_3.DTO.responseDTO.horarioResponseDTO;
 
 import java.util.List;
 
 public interface horarioService {
-    List<Horario> listarHorarios();
-    Horario buscarHorarioPorId(Long id);
-    Horario guardarHorario(Horario horario);
-    Horario actualizarHorario(Horario horario, Long id);
+    List<horarioResponseDTO> listarHorarios();
+    horarioResponseDTO buscarHorarioPorId(Long id);
+    horarioResponseDTO guardarHorario(horarioDTO dto);
+    horarioResponseDTO actualizarHorario(horarioDTO dto, Long id);
     void eliminarHorario(Long id);
-    Horario asignarHorario(Long horarioId, Long veterinario_id);
-    List<Horario> listarPorVeterinario(Long veterinarioId);
+    horarioResponseDTO asignarHorario(Long horarioId, Long veterinario_id);
+    List<horarioResponseDTO> listarPorVeterinario(Long veterinarioId);
 }

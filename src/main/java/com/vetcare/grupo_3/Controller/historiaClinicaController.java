@@ -1,35 +1,48 @@
 package com.vetcare.grupo_3.controller;
 
-import com.vetcare.grupo_3.Entity.HistoriaClinica;
+import com.vetcare.grupo_3.DTO.historiaClinicaDTO;
+import com.vetcare.grupo_3.DTO.responseDTO.historiaClinicaResponseDTO;
 import com.vetcare.grupo_3.Service.historiaClinicaService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/historias-clinicas")
-@RequiredArgsConstructor
-@Tag(name = "Historias Clínicas", description = "API para la gestión de los diagnósticos y tratamientos de las mascotas")
 public class historiaClinicaController {
 
     private final historiaClinicaService service;
 
+    public historiaClinicaController(historiaClinicaService service) {
+        this.service = service;
+    }
+
+    // Nota: Se envía el DTO según la firma de tu interfaz historiaClinicaService
     @GetMapping("/mascota/{mascotaId}")
-    @Operation(summary = "Consultar la historia clínica asociada a una mascota específica")
-    public ResponseEntity<HistoriaClinica> buscarPorMascotaId(@PathVariable Long mascotaId) {
-        return ResponseEntity.ok(service.BuscarHistoriaClinicaPorMascotaId(mascotaId));
+    public ResponseEntity<historiaClinicaResponseDTO> buscarPorMascotaId(
+            @PathVariable Long mascotaId,
+            @Valid @RequestBody(required = false) historiaClinicaDTO dto) {
+        return ResponseEntity.ok(service.BuscarHistoriaClinicaPorMascotaId(dto, mascotaId));
     }
 
     @PostMapping("/mascota/{mascotaId}")
-    @Operation(summary = "Crear el registro de historia clínica para una mascota")
-    public ResponseEntity<HistoriaClinica> crearHistoriaClinica(
-            @Valid @RequestBody HistoriaClinica historiaClinica,
-            @PathVariable Long mascotaId) {
-        // @Valid asegurará que el motivo, diagnóstico y tratamiento no vengan vacíos
-        return new ResponseEntity<>(service.crearHistoriaClinica(historiaClinica, mascotaId), HttpStatus.CREATED);
+    public ResponseEntity<historiaClinicaResponseDTO> crear(
+            @PathVariable Long mascotaId,
+            @Valid @RequestBody historiaClinicaDTO dto) {
+        return new ResponseEntity<>(service.crearHistoriaClinica(dto, mascotaId), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/mascota/{mascotaId}")
+    public ResponseEntity<historiaClinicaResponseDTO> actualizar(
+            @PathVariable Long mascotaId,
+            @Valid @RequestBody historiaClinicaDTO dto) {
+        return ResponseEntity.ok(service.actualizarHistoriaClinica(dto, mascotaId));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        service.eliminarHistoriaClinica(id);
+        return ResponseEntity.noContent().build();
     }
 }

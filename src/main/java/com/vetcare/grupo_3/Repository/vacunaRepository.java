@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface vacunaRepository extends JpaRepository<Vacuna, Long> {
     List<Vacuna> findByVeterinarioId(Long veterinarioId);
+
+
 }

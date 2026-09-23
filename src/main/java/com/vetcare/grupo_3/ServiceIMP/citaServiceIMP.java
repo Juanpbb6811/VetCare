@@ -1,75 +1,100 @@
 package com.vetcare.grupo_3.ServiceIMP;
 
-import com.vetcare.grupo_3.Entity.*;
+import com.vetcare.grupo_3.DTO.citaDTO;
+import com.vetcare.grupo_3.DTO.responseDTO.citaResponseDTO;
+import com.vetcare.grupo_3.Entity.Cita;
+import com.vetcare.grupo_3.Entity.Usuario;
+import com.vetcare.grupo_3.Entity.Veterinario;
 import com.vetcare.grupo_3.Exception.ResourceNotFoundException;
 import com.vetcare.grupo_3.Repository.*;
 import com.vetcare.grupo_3.Service.citaService;
+import com.vetcare.grupo_3.mapper.CitaMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class citaServiceIMP implements citaService {
+
     private final citaRepository citaRepository;
-    private final usuarioRepository usuarioRepository;
-    private final mascotaRepository mascotaRepository;
-    private final veterinarioRepository veterinarioRepository;
-    private final servicioRepository servicioRepository;
+    private final usuarioRepository  usuarioRepository;
+    private final  veterinarioRepository  veterinarioRepository;
+
+
     @Override
-    public List<Cita> listarCitas() {
-        return citaRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<citaResponseDTO> listarCitas() {
+        return citaRepository.findAll().stream()
+                .map(CitaMapper::toResponse)
+                .toList();
     }
 
     @Override
-    public Cita BuscarPorId(Long id) {
-        return citaRepository.findById(id)
+    @Transactional(readOnly = true)
+    public citaResponseDTO BuscarPorId(Long id) {
+        Cita cita = citaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
+        return CitaMapper.toResponse(cita);
+    }
+
+    @Override
+    @Transactional
+    public citaResponseDTO registrar(citaDTO dto) {
+        Cita cita = CitaMapper.toEntity(dto);
+
+        Usuario usuario = usuarioRepository.findById(dto.usuarioId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Veterinario veterinario = veterinarioRepository.findById(dto.veterinarioId())
+                .orElseThrow(() -> new RuntimeException("Veterinario no encontrado"));
+
+        cita.setUsuario(usuario);
+        cita.setVeterinario(veterinario);
+
+        return CitaMapper.toResponse(citaRepository.save(cita));
+    }
+
+    @Override
+    @Transactional
+    public citaResponseDTO actualizar(citaDTO dto, Long id) {
+        Cita citaExistente = citaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
+
+        citaExistente.setFecha(dto.fecha());
+        citaExistente.setEstado(dto.estado());
+
+        if (dto.usuarioId() != null) {
+            Usuario usuario = usuarioRepository.findById(dto.usuarioId())
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+            citaExistente.setUsuario(usuario);
+        }
+
+        if (dto.veterinarioId() != null) {
+            Veterinario veterinario = veterinarioRepository.findById(dto.veterinarioId())
+                    .orElseThrow(() -> new RuntimeException("Veterinario no encontrado"));
+            citaExistente.setVeterinario(veterinario);
+        }
+
+        return CitaMapper.toResponse(citaRepository.save(citaExistente));
+    }
+
+    @Override
+    @Transactional
+    public citaResponseDTO cancelar(Long id) {
+        Cita cita = citaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cita no encontrada con ID: " + id));
-    }
-
-    @Override
-    public Cita actualizar(Cita cita, Long id) {
-        Cita citaExistente = BuscarPorId(id);
-        citaExistente.setFecha(cita.getFecha());
-        citaExistente.setEstado(cita.getEstado());
-        return citaRepository.save(citaExistente);
-    }
-
-    @Override
-    public Cita registrar(Cita cita, Long usuarioId, Long mascotaId, Long veterinarioId, Long servicioId) {
-        if (usuarioId != null) {
-            Usuario usuario = usuarioRepository.findById(usuarioId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + usuarioId));
-            cita.setUsuario(usuario);
-        }
-        if (mascotaId != null) {
-            Mascota mascota = mascotaRepository.findById(mascotaId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada con ID: " + mascotaId));
-            cita.setMascota(mascota);
-        }
-        if (veterinarioId != null) {
-            Veterinario veterinario = veterinarioRepository.findById(veterinarioId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Veterinario no encontrado con ID: " + veterinarioId));
-            cita.setVeterinario(veterinario);
-        }
-        if (servicioId != null) {
-            Servicio servicio = servicioRepository.findById(servicioId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Servicio no encontrado con ID: " + servicioId));
-        }
-        return citaRepository.save(cita);
-    }
-
-    @Override
-    public Cita cancelar(Long id) {
-        Cita cita = BuscarPorId(id);
-        cita.setEstado("CANCELADA");
-        return citaRepository.save(cita);
-    }
-
-    @Override
-    public Cita pagar(Long id) {
-        Cita cita = BuscarPorId(id);
         cita.setEstado("PAGADA");
-        return citaRepository.save(cita);
+        return CitaMapper.toResponse(citaRepository.save(cita));
+    }
+
+    @Override
+    @Transactional
+    public citaResponseDTO pagar(Long id) {
+        Cita cita = citaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cita no encontrada con ID: " + id));
+        cita.setEstado("PAGADA");
+        return CitaMapper.toResponse(citaRepository.save(cita));
     }
 }

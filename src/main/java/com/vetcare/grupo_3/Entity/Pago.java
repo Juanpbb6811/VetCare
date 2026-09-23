@@ -15,7 +15,7 @@ public class Pago {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private double precio;
-    private LocalDate metodo;
+    private String metodo;
     private String estado;
 
     // RELACIONES

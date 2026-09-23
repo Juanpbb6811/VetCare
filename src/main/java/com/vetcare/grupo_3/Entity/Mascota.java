@@ -52,9 +52,13 @@ public class Mascota {
 
 
     // Relación muchos a muchos con Veterinarios
-    @ManyToMany(mappedBy = "mascotas")
+    @ManyToMany
+    @JoinTable(
+            name = "mascota_veterinario",
+            joinColumns = @JoinColumn(name = "mascota_id"),
+            inverseJoinColumns = @JoinColumn(name = "veterinario_id")
+    )
     private List<Veterinario> veterinarios;
-
 
     // Relación muchos a muchos con Servicios
     @ManyToMany

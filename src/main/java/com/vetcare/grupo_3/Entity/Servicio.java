@@ -22,13 +22,9 @@ public class Servicio {
 
     // RELACIONES
     // Relacion uno a muchos(pagos)
-    @OneToMany(mappedBy = "Pago")
+    // RELACIONES
+    // Relacion uno a muchos(pagos)
+    @OneToMany(mappedBy = "servicio")
     private List<Pago> pagos;
-
-    // Relacion muchos a muchos(mascota)
-    @ManyToMany(mappedBy = "servicios")
-    private List<Mascota> mascotas;
-
-
 
 }
